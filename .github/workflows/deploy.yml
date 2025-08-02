@@ -31,12 +31,14 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
-
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          
       - name: Aplicar migrações do banco
         run: npm run prisma:deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
 
       - name: Verificar formatação do código
         run: npm run format
@@ -50,6 +52,7 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
 
       - name: Build da aplicação
         run: |
@@ -60,6 +63,7 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
 
   deploy:
     name: Deploy para Produção
@@ -99,6 +103,7 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DIRECT_URL: ${{ secrets.DIRECT_URL }} 
+          NODE_ENV: ${{ secrets.NODE_ENV }}
 
       - name: Instalar Vercel CLI
         run: npm install -g vercel
