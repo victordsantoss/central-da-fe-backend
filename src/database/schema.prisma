@@ -1,0 +1,184 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Address {
+  id             String           @id @default(cuid())
+  street         String           @db.VarChar(255)
+  number         String           @db.VarChar(50)
+  complement     String?          @db.VarChar(255)
+  neighborhood   String           @db.VarChar(255)
+  city           String           @db.VarChar(255)
+  state          String           @db.VarChar(2)
+  zipCode        String           @db.VarChar(10)
+  createdAt      DateTime         @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime         @default(now()) @db.Timestamp(6)
+  userAddresses  UserAddress[]
+  churchAddresses ChurchAddress[]
+  events         Event[]
+}
+
+model Phone {
+  id           String        @id @default(cuid())
+  number       String        @db.VarChar(20)
+  type         String        @default("MOBILE") @db.VarChar
+  createdAt    DateTime      @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime      @default(now()) @db.Timestamp(6)
+  userPhones   UserPhone[]
+  churchPhones ChurchPhone[]
+}
+
+model Session {
+  id        String    @id @default(cuid())
+  token     String    @db.VarChar(500)
+  isActive  Boolean   @default(true)
+  startDate DateTime  @db.Timestamp(6)
+  endDate   DateTime? @db.Timestamp(6)
+  userId    String?   
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model User {
+  id        String        @id @default(cuid())
+  name      String    @db.VarChar(255)
+  email     String    @db.VarChar(255)
+  cpf       String    @db.VarChar(14)
+  password  String    @db.VarChar(255)
+  isActive  Boolean   @default(true)
+  provider  String    @default("LOCAL") @db.VarChar
+  birthDate DateTime? @db.Date
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @default(now()) @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
+  roleId    String?
+  userAddresses UserAddress[]
+  userPhones    UserPhone[]
+  sessions      Session[]
+  orders        Order[]
+  role      Role?     @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Church {
+  id              String          @id @default(cuid())
+  name            String          @db.VarChar(255)
+  createdAt       DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime        @default(now()) @db.Timestamp(6)
+  churchAddresses ChurchAddress[]
+  churchPhones    ChurchPhone[]
+  events          Event[]
+}
+
+model UserAddress {
+  id        String   @id @default(cuid())
+  userId    String   
+  addressId String   
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address   Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, addressId])
+}
+
+model ChurchAddress {
+  id        String   @id @default(cuid())
+  churchId  String   
+  addressId String   
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  church    Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  address   Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
+
+  @@unique([churchId, addressId])
+}
+
+
+model UserPhone {
+  id        String   @id @default(cuid())
+  userId    String   
+  phoneId   String   
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone     Phone    @relation(fields: [phoneId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, phoneId])
+}
+
+model ChurchPhone {
+  id        String   @id @default(cuid())
+  churchId  String   
+  phoneId   String   
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  church    Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  phone     Phone    @relation(fields: [phoneId], references: [id], onDelete: Cascade)
+
+  @@unique([churchId, phoneId])
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  name        String   @db.VarChar(255)
+  description String   @db.Text
+  category    String   @db.VarChar(100)
+  isPaid      Boolean  @default(false)
+  price       Decimal? @db.Decimal(10, 2)
+  startDate   DateTime @db.Timestamp(6)
+  endDate     DateTime @db.Timestamp(6)
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @updatedAt @db.Timestamp(6)
+  
+  churchId    String   
+  church      Church   @relation(fields: [churchId], references: [id])
+  
+  addressId   String   
+  address     Address  @relation(fields: [addressId], references: [id])
+  
+  orders      Order[]
+}
+
+model Role {
+  id               String             @id @default(cuid())
+  name             RoleTypes          @default(USER)
+  isActive         Boolean            @default(true)
+  createdAt        DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime           @default(now()) @db.Timestamp(6)
+  users            User[]
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  userId    String
+  eventId   String
+  quantity  Int
+  total     Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tickets   Ticket[]
+}
+
+model Ticket {
+  id        String   @id @default(cuid())
+  orderId   String
+  code      String   @unique @db.VarChar(255)
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+  
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum RoleTypes {
+  SADMIN  @map("SADMIN")
+  ADMIN   @map("ADMIN")
+  USER    @map("USER")
+  MANAGER @map("MANAGER")
+  GUEST   @map("GUEST")
+}

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: centraldafe_nest_api
+    ports:
+      - '3000:3000'
+    environment:
+      - DATABASE_HOST=database
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=centraldafe
+      - DATABASE_PASSWORD=centraldafe
+      - DATABASE_NAME=centraldafe
+      - DATABASE_URL=postgresql://centraldafe:centraldafe@database:5432/centraldafe
+      - DIRECT_URL=postgresql://centraldafe:centraldafe@database:5432/centraldafe
+      - JWT_SECRET=centraldafe
+    depends_on:
+      - database
+    volumes:
+      - .:/usr/src/app
+    command: npm run start:dev
+
+  database:
+    image: postgres:15
+    container_name: centraldafe_postgres_db 
+    environment:
+      POSTGRES_USER: centraldafe
+      POSTGRES_PASSWORD: centraldafe
+      POSTGRES_DB: centraldafe
+    healthcheck: 
+      interval: 10s
+      retries: 10
+      test: "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""
+      timeout: 2s
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
