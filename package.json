@@ -23,6 +23,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:roles": "ts-node -r tsconfig-paths/register src/database/scripts/seed-roles.ts",
     "seed:positions": "ts-node -r tsconfig-paths/register src/database/scripts/seed-positions.ts",
+    "seed:churches": "ts-node -r tsconfig-paths/register src/database/scripts/seed-churches.ts",
     "seed:all": "npm run seed:roles && npm run seed:positions",
     "prisma:dev": "nodemon -e prisma --exec 'prisma generate --schema=src/database/schema.prisma'",
     "prisma:migrate": "prisma migrate dev --schema=src/database/schema.prisma --create-only",
