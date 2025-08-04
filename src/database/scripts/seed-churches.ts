@@ -31,7 +31,9 @@ async function seedChurches() {
     });
 
     if (existingChurch) {
-      console.log(`⚠️  Igreja '${churchData.name}' já existe no banco de dados`);
+      console.log(
+        `⚠️  Igreja '${churchData.name}' já existe no banco de dados`,
+      );
       return;
     }
 
@@ -80,8 +82,12 @@ async function seedChurches() {
 
     console.log('\n📊 Relatório do seed:');
     console.log(`   • Igreja: ${churchData.name}`);
-    console.log(`   • Endereço: ${churchData.address.street}, ${churchData.address.number}`);
-    console.log(`   • Cidade: ${churchData.address.city} - ${churchData.address.state}`);
+    console.log(
+      `   • Endereço: ${churchData.address.street}, ${churchData.address.number}`,
+    );
+    console.log(
+      `   • Cidade: ${churchData.address.city} - ${churchData.address.state}`,
+    );
     console.log(`   • CEP: ${churchData.address.zipCode}`);
     console.log('🎉 Seed da igreja concluído com sucesso!');
   } catch (error) {

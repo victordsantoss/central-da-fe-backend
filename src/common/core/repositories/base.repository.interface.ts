@@ -8,4 +8,21 @@ export interface IBaseRepository<Entity, CreateInput = any, UpdateInput = any> {
     field: K,
     value: Entity[K],
   ): Promise<Entity | null>;
+
+  findManyBy<K extends keyof Entity>(
+    field: K,
+    value: Entity[K],
+  ): Promise<Entity[]>;
+
+  findOneByAndIncludes<K extends keyof Entity>(
+    field: K,
+    value: Entity[K],
+    relations: string[],
+  ): Promise<Entity | null>;
+
+  findManyByAndIncludes<K extends keyof Entity>(
+    field: K,
+    value: Entity[K],
+    relations: string[],
+  ): Promise<Entity[]>;
 }

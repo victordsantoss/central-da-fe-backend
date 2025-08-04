@@ -49,4 +49,35 @@ export abstract class BaseRepository<
       where: { [field]: value },
     });
   }
+
+  public async findManyBy<K extends keyof Entity>(
+    field: K,
+    value: Entity[K],
+  ): Promise<Entity[]> {
+    return this.getModel().findMany({
+      where: { [field]: value },
+    });
+  }
+
+  public async findOneByAndIncludes<K extends keyof Entity>(
+    field: K,
+    value: Entity[K],
+    relations: string[],
+  ): Promise<Entity | null> {
+    return this.getModel().findFirst({
+      where: { [field]: value } as any,
+      include: relations,
+    });
+  }
+
+  public async findManyByAndIncludes<K extends keyof Entity>(
+    field: K,
+    value: Entity[K],
+    relations: string[],
+  ): Promise<Entity[]> {
+    return this.getModel().findMany({
+      where: { [field]: value } as any,
+      include: relations,
+    });
+  }
 }
