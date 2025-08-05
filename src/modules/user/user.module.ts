@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UserController } from './controllers/user/user.controller';
 import { RegisterUserService } from './services/user/register/register.service';
 import { UserRepository } from './repositories/user/user.repository';
@@ -7,14 +7,14 @@ import { AuthModule } from '../auth/auth.module';
 import { GetAuthenticatedUserService } from './services/user/get-authenticated-user/get-authenticated-user.service';
 import { AccessControlModule } from '../access-control/access-control.module';
 import { PrismaModule } from '../../database/database.module';
-
+import { ChurchModule } from '../church/church.module';
 @Module({
   imports: [
     PrismaModule,
     CommonModule,
     AuthModule,
     AccessControlModule,
-    forwardRef(() => AuthModule),
+    ChurchModule,
   ],
   controllers: [UserController],
   providers: [

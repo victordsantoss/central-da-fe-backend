@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, Length, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  Length,
+  IsOptional,
+  IsArray,
+  ArrayNotEmpty,
+} from 'class-validator';
 
 export class IRegisterUserRequestDto {
   @ApiProperty({
@@ -33,4 +40,19 @@ export class IRegisterUserRequestDto {
   @IsString()
   @Length(8, 255)
   password: string;
+
+  @ApiProperty({
+    description: 'ID da igreja do usuário',
+  })
+  @IsString()
+  churchId: string;
+
+  @ApiProperty({
+    description: 'IDs das posições do usuário',
+    type: [String],
+  })
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  positionIds: string[];
 }

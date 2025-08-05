@@ -43,13 +43,13 @@ export class ChurchRepository
     };
 
     const [churches, total] = await this.prisma.$transaction([
-      this.getModel().findMany({
+      this.prisma.church.findMany({
         where,
         orderBy: orderByClause,
         skip: (page - 1) * limit,
         take: limit,
       }),
-      this.getModel().count({ where }),
+      this.prisma.church.count({ where }),
     ]);
 
     return [churches, total];

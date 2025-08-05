@@ -12,4 +12,18 @@ export class UserRepository
   constructor(prisma: PrismaService) {
     super(prisma, 'user');
   }
+
+  async createUserPositions(
+    userId: string,
+    positionIds: string[],
+  ): Promise<void> {
+    const userPositions = positionIds.map((positionId) => ({
+      userId,
+      positionId,
+    }));
+
+    await this.prisma.userPosition.createMany({
+      data: userPositions,
+    });
+  }
 }

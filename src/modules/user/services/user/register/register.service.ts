@@ -11,6 +11,16 @@ import { User, RoleTypes } from '@prisma/client';
 import { IRegisterUserService } from './register.interface';
 import { IPasswordService } from '../../../../auth/services/password/password.interface';
 import { IGetRoleService } from '../../../../access-control/services/role/get-role/get-role.service.interface';
+import { IChurchRepository } from '../../../../church/repositories/church/church.repository.interface';
+import { IPositionRepository } from '../../../../church/repositories/position/position.repository.interface';
+
+type CreateUserPayload = {
+  name: string;
+  email: string;
+  cpf: string;
+  password: string;
+  roleId: string;
+};
 
 @Injectable()
 export class RegisterUserService implements IRegisterUserService {
@@ -25,24 +35,41 @@ export class RegisterUserService implements IRegisterUserService {
     private readonly passwordService: IPasswordService,
     @Inject('IGetRoleService')
     private readonly getRoleService: IGetRoleService,
+    @Inject('IChurchRepository')
+    private readonly churchRepository: IChurchRepository,
+    @Inject('IPositionRepository')
+    private readonly positionRepository: IPositionRepository,
   ) {}
 
   async perform(userData: IRegisterUserRequestDto): Promise<IUserResponseDto> {
     await this.findUserByEmail(userData.email);
     await this.findUserByCpf(userData.cpf);
-    userData.password = await this.passwordService.createHash(
+
+    await this.validateChurchExists(userData.churchId);
+
+    await this.validatePositionsExist(userData.positionIds);
+
+    const hashedPassword = await this.passwordService.createHash(
       userData.password,
     );
+
     const role = await this.getRoleService.perform(RoleTypes.ADMIN);
-    userData.roleId = role.id;
-    const payload = {
+
+    const userPayload: CreateUserPayload = {
       name: userData.name,
       email: userData.email,
       cpf: userData.cpf,
-      password: userData.password,
+      password: hashedPassword,
       roleId: role.id,
     };
-    const createdUser = await this.userRepository.create(payload);
+
+    const createdUser = await this.userRepository.create(userPayload as any);
+
+    await this.userRepository.createUserPositions(
+      createdUser.id,
+      userData.positionIds,
+    );
+
     return this.normalizeResponse(createdUser);
   }
 
@@ -84,5 +111,31 @@ export class RegisterUserService implements IRegisterUserService {
 
   get emailField(): keyof User {
     return this._emailField;
+  }
+
+  private async validateChurchExists(churchId: string): Promise<void> {
+    this.logger.log(`Validando se a igreja existe: ${churchId}`);
+    const church = await this.churchRepository.findOneBy('id', churchId);
+
+    if (!church) {
+      throw new BadRequestException('Igreja não encontrada');
+    }
+  }
+
+  private async validatePositionsExist(positionIds: string[]): Promise<void> {
+    this.logger.log(
+      `Validando se as posições existem: ${positionIds.join(', ')}`,
+    );
+
+    for (const positionId of positionIds) {
+      const position = await this.positionRepository.findOneBy(
+        'id',
+        positionId,
+      );
+
+      if (!position) {
+        throw new BadRequestException(`Posição não encontrada: ${positionId}`);
+      }
+    }
   }
 }

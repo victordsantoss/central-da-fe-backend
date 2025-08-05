@@ -11,7 +11,7 @@ export class PositionRepository
   implements IPositionRepository
 {
   constructor(prisma: PrismaService) {
-    super(prisma, 'church');
+    super(prisma, 'position');
   }
 
   async findByFilters(
@@ -43,13 +43,13 @@ export class PositionRepository
     };
 
     const [positions, total] = await this.prisma.$transaction([
-      this.getModel().findMany({
+      this.prisma.position.findMany({
         where,
         orderBy: orderByClause,
         skip: (page - 1) * limit,
         take: limit,
       }),
-      this.getModel().count({ where }),
+      this.prisma.position.count({ where }),
     ]);
 
     return [positions, total];

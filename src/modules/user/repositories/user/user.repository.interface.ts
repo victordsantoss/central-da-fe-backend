@@ -3,4 +3,6 @@ import { User } from '@prisma/client';
 import { IRegisterUserRequestDto } from '../../dtos/user/register.request.dto';
 
 export interface IUserRepository
-  extends IBaseRepository<User, IRegisterUserRequestDto> {}
+  extends IBaseRepository<User, IRegisterUserRequestDto> {
+  createUserPositions(userId: string, positionIds: string[]): Promise<void>;
+}
