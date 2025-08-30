@@ -1,10 +1,21 @@
-import { Controller, Get, Inject, Query, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Query,
+  Post,
+  Param,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Event } from '@prisma/client';
 import { IListEventsRequestDto } from '../dtos/event/list.request.dto';
 import { IListEventsResponseDto } from '../dtos/event/list.response.dto';
 import { IListEventsService } from '../services/event/list/list.interface';
 import { IEventResponseDto } from '../dtos/event/event.response.dto';
 import { IGetEventService } from '../services/event/get/get.interface';
+import { IRegisterEventRequestDto } from '../dtos/event/register.request.dto';
+import { IRegisterEventService } from '../services/event/register/register.interface';
 
 @ApiTags('Event')
 @Controller('event')
@@ -14,6 +25,8 @@ export class EventController {
     private readonly listEventsService: IListEventsService,
     @Inject('IGetEventService')
     private readonly getEventService: IGetEventService,
+    @Inject('IRegisterEventService')
+    private readonly registerEventService: IRegisterEventService,
   ) {}
 
   @Get()
@@ -49,5 +62,19 @@ export class EventController {
   })
   async findOne(@Param('id') id: string): Promise<IEventResponseDto> {
     return this.getEventService.perform(id);
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Criar evento',
+    description: 'Cria um novo evento',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Evento criado com sucesso',
+    type: Event,
+  })
+  async create(@Body() event: IRegisterEventRequestDto): Promise<Event> {
+    return this.registerEventService.perform(event);
   }
 }

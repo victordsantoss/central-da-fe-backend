@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Inject,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -17,10 +18,12 @@ import {
 import { CpfGuard } from '../../../../common/guards/cpf.guard';
 import { IRegisterUserRequestDto } from '../../dtos/user/register.request.dto';
 import { IUserResponseDto } from '../../dtos/user/user.response.dto';
+import { IGetUserByCpfRequestDto } from '../../dtos/user/get-by-cpf.request.dto';
 import { IRegisterUserService } from '../../services/user/register/register.interface';
 import { JwtAuthGuard } from '../../../../common/guards/auth.guard';
 import { IAuthenticatedUserRequestDto } from '../../../../common/core/dtos/auth.request.dto';
 import { IGetAuthenticatedUserService } from '../../services/user/get-authenticated-user/get-authenticated-user.interface';
+import { IGetUserByCpfService } from '../../services/user/get-by-cpf/get-by-cpf.interface';
 
 @Controller('user')
 export class UserController {
@@ -29,7 +32,9 @@ export class UserController {
     private readonly registerUserService: IRegisterUserService,
     @Inject('IGetAuthenticatedUserService')
     private readonly getAuthenticatedUserService: IGetAuthenticatedUserService,
-  ) {}
+    @Inject('IGetUserByCpfService')
+    private readonly getUserByCpfService: IGetUserByCpfService,
+  ) { }
 
   @Post()
   @ApiOperation({ summary: 'Registrar um novo usuário' })
@@ -59,5 +64,19 @@ export class UserController {
     @Request() req: { user: IAuthenticatedUserRequestDto },
   ): Promise<IUserResponseDto> {
     return this.getAuthenticatedUserService.perform(req.user.token);
+  }
+
+  @Get('cpf/:cpf')
+  @ApiOperation({ summary: 'Buscar usuário por CPF' })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário encontrado com sucesso',
+    type: IUserResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  async getByCpf(
+    @Param() params: IGetUserByCpfRequestDto,
+  ): Promise<IUserResponseDto> {
+    return this.getUserByCpfService.perform(params.cpf);
   }
 }

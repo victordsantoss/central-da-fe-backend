@@ -1,6 +1,7 @@
 import { EventRepository } from '../repositories/event.repository';
 import { EventService } from '../services/event/list/list.service';
 import { GetEventService } from '../services/event/get/get.service';
+import { RegisterEventService } from '../services/event/register/register.service';
 
 export const eventProviders = [
   {
@@ -10,6 +11,10 @@ export const eventProviders = [
   {
     provide: 'IGetEventService',
     useClass: GetEventService,
+  },
+  {
+    provide: 'IRegisterEventService',
+    useClass: RegisterEventService,
   },
   {
     provide: 'IEventRepository',
