@@ -39,7 +39,7 @@ export class RegisterUserService implements IRegisterUserService {
     private readonly churchRepository: IChurchRepository,
     @Inject('IPositionRepository')
     private readonly positionRepository: IPositionRepository,
-  ) {}
+  ) { }
 
   async perform(userData: IRegisterUserRequestDto): Promise<IUserResponseDto> {
     await this.findUserByEmail(userData.email);
@@ -53,7 +53,7 @@ export class RegisterUserService implements IRegisterUserService {
       userData.password,
     );
 
-    const role = await this.getRoleService.perform(RoleTypes.ADMIN);
+    const role = await this.getRoleService.perform(RoleTypes.USER);
 
     const userPayload: CreateUserPayload = {
       name: userData.name,
