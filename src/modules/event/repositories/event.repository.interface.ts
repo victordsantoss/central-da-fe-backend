@@ -7,4 +7,5 @@ export interface IEventRepository extends IBaseRepository<Event> {
   findByFilters(
     filters: IListEventsRequestDto,
   ): Promise<[EventsWithChurchAndAddress[], number]>;
+  findByIdWithIncludes(id: string): Promise<EventsWithChurchAndAddress | null>;
 }

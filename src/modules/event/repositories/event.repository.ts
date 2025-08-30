@@ -59,4 +59,16 @@ export class EventRepository
 
     return [events, total];
   }
+
+  async findByIdWithIncludes(
+    id: string,
+  ): Promise<EventsWithChurchAndAddress | null> {
+    return this.prisma.event.findUnique({
+      where: { id },
+      include: {
+        church: true,
+        address: true,
+      },
+    });
+  }
 }
