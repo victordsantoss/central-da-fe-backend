@@ -12,7 +12,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 import { ISessionRepository } from '../../repositories/session.repository.interface';
 import { IAuthenticatedUserRequestDto } from '../../../../common/core/dtos/auth.request.dto';
-import { User } from '@prisma/client';
+import { RoleTypes, User } from '@prisma/client';
+import { IRoleRepository } from '../../../access-control/repositories/role/role.repository.interface';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -25,6 +26,8 @@ export class AuthService implements IAuthService {
     private readonly sessionRepository: ISessionRepository,
     @Inject('IPasswordService')
     private readonly passwordService: IPasswordService,
+    @Inject('IRoleRepository')
+    private readonly roleRepository: IRoleRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -74,6 +77,15 @@ export class AuthService implements IAuthService {
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
+
+    // TODO: Remover após criação de área logada para outros tipos de usuários
+    const role = await this.roleRepository.findById(user.roleId);
+    if (role.name !== RoleTypes.ADMIN) {
+      throw new NotFoundException(
+        'Usuário não tem permissão para acessar o sistema. Contate o administrador.',
+      );
+    }
+
     return user;
   }
 

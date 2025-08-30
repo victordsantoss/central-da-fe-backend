@@ -130,6 +130,7 @@ model Event {
   price       Decimal? @db.Decimal(10, 2)
   startDate   DateTime @db.Timestamp(6)
   endDate     DateTime @db.Timestamp(6)
+  status      String   @default("ACTIVE") @db.VarChar(100)  
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @updatedAt @db.Timestamp(6)
   

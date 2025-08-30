@@ -5,6 +5,7 @@ import { UserModule } from './modules/user/user.module';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChurchModule } from './modules/church/church.module';
+import { EventModule } from './modules/event/event.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ChurchModule } from './modules/church/church.module';
     PrismaModule,
     UserModule,
     ChurchModule,
+    EventModule,
   ],
 })
 export class AppModule {}

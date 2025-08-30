@@ -6,6 +6,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { SessionRepository } from './repositories/session.repository';
 import { AuthService } from './services/auth/auth.service';
 import { PasswordService } from './services/password/password.service';
+import { AccessControlModule } from '../access-control/access-control.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PasswordService } from './services/password/password.service';
       signOptions: { expiresIn: '1h' },
     }),
     forwardRef(() => UserModule),
+    forwardRef(() => AccessControlModule),
   ],
   controllers: [AuthController],
   providers: [
