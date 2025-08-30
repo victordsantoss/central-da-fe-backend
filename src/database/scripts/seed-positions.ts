@@ -16,10 +16,9 @@ async function seedPositions() {
     { name: 'Evangelista' },
     { name: 'Missionário(a)' },
     { name: 'Diácono(a)' },
-    { name: 'Bispo(a)' },
     { name: 'Apóstolo(a)' },
-    { name: 'Profeta(a)' },
     { name: 'Ministro(a) de Louvor' },
+    { name: 'Membro da Igreja' },
 
     // Cargos administrativos
     { name: 'Secretário(a)' },

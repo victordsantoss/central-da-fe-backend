@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 export abstract class BaseRepository<
   Entity,
@@ -78,6 +78,40 @@ export abstract class BaseRepository<
     return this.getModel().findMany({
       where: { [field]: value } as any,
       include: relations,
+    });
+  }
+
+  /**
+   * Executa operações dentro de uma transação.
+   * @param operation - Função que contém as operações a serem executadas dentro da transação
+   * @returns O resultado da operação
+   */
+  protected async executeTransaction<T>(
+    operation: (transaction: Omit<PrismaClient, '$transaction'>) => Promise<T>,
+  ): Promise<T> {
+    return this.prisma.$transaction(operation);
+  }
+
+  /**
+   * Executa operações dentro de uma transação com timeout e número máximo de tentativas
+   * @param operation - Função que contém as operações a serem executadas dentro da transação
+   * @param options - Opções da transação (timeout e max_attempts)
+   * @returns O resultado da operação
+   */
+  protected async executeTransactionWithOptions<T>(
+    operation: (transaction: Omit<PrismaClient, '$transaction'>) => Promise<T>,
+    options?: {
+      timeout?: number;
+      maxWait?: number;
+      isolationLevel?: Prisma.TransactionIsolationLevel;
+    },
+  ): Promise<T> {
+    const { timeout = 5000, maxWait = 2000, isolationLevel } = options || {};
+
+    return this.prisma.$transaction(operation, {
+      timeout,
+      maxWait,
+      isolationLevel,
     });
   }
 }

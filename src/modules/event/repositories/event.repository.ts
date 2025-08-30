@@ -15,6 +15,30 @@ export class EventRepository
     super(prisma, 'event');
   }
 
+  async createWithAddress(
+    eventData: Omit<Prisma.EventCreateInput, 'address'>,
+    addressData: Prisma.AddressCreateInput,
+  ): Promise<Event> {
+    return this.executeTransactionWithOptions(async (tx) => {
+      const createdAddress = await tx.address.create({
+        data: addressData,
+      });
+
+      const createdEvent = await tx.event.create({
+        data: {
+          ...eventData,
+          address: {
+            connect: {
+              id: createdAddress.id,
+            },
+          },
+        },
+      });
+
+      return createdEvent;
+    });
+  }
+
   async findByFilters(
     filters: IListEventsRequestDto,
   ): Promise<[EventsWithChurchAndAddress[], number]> {
