@@ -39,7 +39,7 @@ export class RegisterUserService implements IRegisterUserService {
     private readonly churchRepository: IChurchRepository,
     @Inject('IPositionRepository')
     private readonly positionRepository: IPositionRepository,
-  ) {}
+  ) { }
 
   async perform(userData: IRegisterUserRequestDto): Promise<IUserResponseDto> {
     await this.findUserByEmail(userData.email);
@@ -98,6 +98,7 @@ export class RegisterUserService implements IRegisterUserService {
   private normalizeResponse(user: User): IUserResponseDto {
     this.logger.log(`Normalizando resposta do usuário: ${user.name}`);
     return {
+      isActive: user.isActive,
       name: user.name,
       email: user.email,
       cpf: user.cpf,
