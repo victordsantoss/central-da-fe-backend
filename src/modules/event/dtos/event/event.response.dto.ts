@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EventCategory, EventStatus } from 'src/common/enums/event.enum';
+import {
+  EventCategory,
+  EventStatus,
+} from '../../../../common/enums/event.enum';
 
 export class IEventResponseDto {
   @ApiProperty({

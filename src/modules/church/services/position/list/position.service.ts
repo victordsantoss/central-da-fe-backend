@@ -1,9 +1,9 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { IListPositionsService } from './list.interface';
-import { IListPositionsRequestDto } from 'src/modules/church/dtos/position/list.request.dto';
-import { IListPositionsResponseDto } from 'src/modules/church/dtos/position/list.response.dto';
-import { IPositionRepository } from 'src/modules/church/repositories/position/position.repository.interface';
-import { IPositionResponseDto } from 'src/modules/church/dtos/position/position.response.dto';
+import { IListPositionsRequestDto } from '../../../dtos/position/list.request.dto';
+import { IListPositionsResponseDto } from '../../../dtos/position/list.response.dto';
+import { IPositionRepository } from '../../../repositories/position/position.repository.interface';
+import { IPositionResponseDto } from '../../../dtos/position/position.response.dto';
 import { Position } from '@prisma/client';
 
 @Injectable()

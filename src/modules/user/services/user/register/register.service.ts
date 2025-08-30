@@ -39,7 +39,7 @@ export class RegisterUserService implements IRegisterUserService {
     private readonly churchRepository: IChurchRepository,
     @Inject('IPositionRepository')
     private readonly positionRepository: IPositionRepository,
-  ) { }
+  ) {}
 
   async perform(userData: IRegisterUserRequestDto): Promise<IUserResponseDto> {
     await this.findUserByEmail(userData.email);

@@ -78,7 +78,6 @@ export class AuthService implements IAuthService {
       throw new NotFoundException('Usuário não encontrado');
     }
 
-    // TODO: Remover após criação de área logada para outros tipos de usuários
     const role = await this.roleRepository.findById(user.roleId);
     if (role.name !== RoleTypes.ADMIN) {
       throw new NotFoundException(

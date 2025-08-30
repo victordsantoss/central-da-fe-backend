@@ -1,10 +1,10 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { IListChurchesService } from './list.interface';
-import { IListChurchesRequestDto } from 'src/modules/church/dtos/church/list.request.dto';
-import { IListChurchesResponseDto } from 'src/modules/church/dtos/church/list.response.dto';
-import { IChurchRepository } from 'src/modules/church/repositories/church/church.repository.interface';
+import { IListChurchesRequestDto } from '../../../dtos/church/list.request.dto';
+import { IListChurchesResponseDto } from '../../../dtos/church/list.response.dto';
+import { IChurchRepository } from '../../../repositories/church/church.repository.interface';
 import { Church } from '@prisma/client';
-import { IChurchResponseDto } from 'src/modules/church/dtos/church/church.response.dto';
+import { IChurchResponseDto } from '../../../dtos/church/church.response.dto';
 
 @Injectable()
 export class ChurchService implements IListChurchesService {

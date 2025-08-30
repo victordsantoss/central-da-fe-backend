@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { config } from 'dotenv';
-import { EventStatus } from 'src/common/enums/event.enum';
+import { EventStatus } from '../../common/enums/event.enum';
 
 config();
 
