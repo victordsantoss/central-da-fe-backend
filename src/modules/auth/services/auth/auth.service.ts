@@ -80,9 +80,9 @@ export class AuthService implements IAuthService {
 
     const role = await this.roleRepository.findById(user.roleId);
     if (role.name !== RoleTypes.ADMIN) {
-      // throw new NotFoundException(
-      //   'Usuário não tem permissão para acessar o sistema. Contate o administrador.',
-      // );
+      throw new NotFoundException(
+        'Usuário não tem permissão para acessar o sistema. Contate o administrador.',
+      );
     }
 
     return user;
