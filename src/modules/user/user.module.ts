@@ -43,4 +43,4 @@ import { ChurchModule } from '../church/church.module';
     'IGetUserByCpfService',
   ],
 })
-export class UserModule { }
+export class UserModule {}

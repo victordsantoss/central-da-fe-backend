@@ -130,4 +130,39 @@ export class IRegisterEventRequestDto {
   @ValidateNested()
   @Type(() => AddressDto)
   address: AddressDto;
+
+  @ApiProperty({
+    description: 'Link personalizado do evento',
+  })
+  @IsString()
+  @IsOptional()
+  customLink?: string;
+
+  @ApiProperty({
+    description: 'Link do Instagram do evento',
+  })
+  @IsString()
+  @IsOptional()
+  instagramLink?: string;
+
+  @ApiProperty({
+    description: 'Link do Facebook do evento',
+  })
+  @IsString()
+  @IsOptional()
+  facebookLink?: string;
+
+  @ApiProperty({
+    description: 'Link do YouTube do evento',
+  })
+  @IsString()
+  @IsOptional()
+  youtubeLink?: string;
+
+  @ApiProperty({
+    description: 'Conteúdo do evento',
+  })
+  @IsString()
+  @IsOptional()
+  content?: string;
 }

@@ -7,7 +7,7 @@ import {
   Post,
   Param,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { Event } from '@prisma/client';
 import { IListEventsRequestDto } from '../dtos/event/list.request.dto';
 import { IListEventsResponseDto } from '../dtos/event/list.response.dto';
@@ -68,6 +68,14 @@ export class EventController {
   @ApiOperation({
     summary: 'Criar evento',
     description: 'Cria um novo evento',
+  })
+  @ApiBody({
+    type: IRegisterEventRequestDto,
+    description: 'Dados do evento',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Evento criado com sucesso',
   })
   @ApiResponse({
     status: 201,

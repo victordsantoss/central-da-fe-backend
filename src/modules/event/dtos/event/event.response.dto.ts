@@ -42,6 +42,36 @@ export class IEventResponseDto {
   price: number;
 
   @ApiProperty({
+    description: 'Link personalizado do evento',
+    example: 'https://www.example.com',
+  })
+  customLink?: string;
+
+  @ApiProperty({
+    description: 'Link do Instagram do evento',
+    example: 'https://www.instagram.com',
+  })
+  instagramLink?: string;
+
+  @ApiProperty({
+    description: 'Link do Facebook do evento',
+    example: 'https://www.facebook.com',
+  })
+  facebookLink?: string;
+
+  @ApiProperty({
+    description: 'Link do YouTube do evento',
+    example: 'https://www.youtube.com',
+  })
+  youtubeLink?: string;
+
+  @ApiProperty({
+    description: 'Conteúdo do evento',
+    example: 'Conteúdo do evento de teste',
+  })
+  content: string;
+
+  @ApiProperty({
     description: 'Data de início do evento',
     example: '2021-01-01',
   })

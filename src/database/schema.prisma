@@ -125,6 +125,7 @@ model Event {
   id        String   @id @default(cuid())
   name        String   @db.VarChar(255)
   description String   @db.Text
+  content     String?  @db.Text
   category    String   @db.VarChar(100)
   isPaid      Boolean  @default(false)
   price       Decimal? @db.Decimal(10, 2)
@@ -134,6 +135,14 @@ model Event {
   status      String   @default("ACTIVE") @db.VarChar(100)  
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @updatedAt @db.Timestamp(6)
+
+  customLink       String?  @db.VarChar(255)
+  instagramLink    String?  @db.VarChar(255)
+  facebookLink     String?  @db.VarChar(255)
+  youtubeLink      String?  @db.VarChar(255)
+  bannerVertical   String?  @db.VarChar(255)
+  bannerHorizontal String?  @db.VarChar(255)
+  bannerMain       String?  @db.VarChar(255)
   
   churchId    String   
   church      Church   @relation(fields: [churchId], references: [id])

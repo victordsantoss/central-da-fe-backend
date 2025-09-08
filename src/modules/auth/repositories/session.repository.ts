@@ -8,7 +8,8 @@ import { PrismaService } from '../../../database/core/prisma.service';
 @Injectable()
 export class SessionRepository
   extends BaseRepository<Session>
-  implements ISessionRepository {
+  implements ISessionRepository
+{
   private readonly logger = new Logger(SessionRepository.name);
   constructor(prisma: PrismaService) {
     super(prisma, 'session');

@@ -34,7 +34,7 @@ export class UserController {
     private readonly getAuthenticatedUserService: IGetAuthenticatedUserService,
     @Inject('IGetUserByCpfService')
     private readonly getUserByCpfService: IGetUserByCpfService,
-  ) { }
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Registrar um novo usuário' })

@@ -10,7 +10,7 @@ export class GetUserByCpfService implements IGetUserByCpfService {
   constructor(
     @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
-  ) { }
+  ) {}
 
   async perform(cpf: string): Promise<IUserResponseDto> {
     this.logger.log(`Buscando usuário por CPF: ${cpf}`);
