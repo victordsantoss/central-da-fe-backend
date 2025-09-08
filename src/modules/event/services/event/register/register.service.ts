@@ -14,7 +14,7 @@ export class RegisterEventService implements IRegisterEventService {
     @Inject('IEventRepository')
     private readonly eventRepository: IEventRepository,
     private readonly prisma: PrismaService,
-  ) { }
+  ) {}
 
   async perform(payload: IRegisterEventRequestDto): Promise<Event> {
     this.logger.log('Iniciando o processo de criação de evento');

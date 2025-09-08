@@ -15,7 +15,7 @@ export class GetEventService implements IGetEventService {
   constructor(
     @Inject('IEventRepository')
     private readonly eventRepository: IEventRepository,
-  ) { }
+  ) {}
 
   async perform(id: string): Promise<IEventResponseDto> {
     this.logger.log(`Buscando evento por ID: ${id}`);
