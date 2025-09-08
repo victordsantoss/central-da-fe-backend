@@ -1,1 +1,0 @@
-{"version":3,"file":"position.provider.js","sourceRoot":"","sources":["../../../../src/modules/church/providers/position.provider.ts"],"names":[],"mappings":";;;AAAA,sFAAkF;AAClF,iFAA6E;AAEhE,QAAA,iBAAiB,GAAG;IAC/B;QACE,OAAO,EAAE,uBAAuB;QAChC,QAAQ,EAAE,kCAAe;KAC1B;IACD;QACE,OAAO,EAAE,qBAAqB;QAC9B,QAAQ,EAAE,wCAAkB;KAC7B;CACF,CAAC"}

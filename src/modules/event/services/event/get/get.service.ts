@@ -2,8 +2,11 @@ import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IGetEventService } from './get.interface';
 import { IEventResponseDto } from '../../../dtos/event/event.response.dto';
 import { IEventRepository } from '../../../repositories/event.repository.interface';
-import { EventCategory, EventStatus } from 'src/common/enums/event.enum';
-import { EventsWithChurchAndAddress } from 'src/modules/event/types/event.types';
+import {
+  EventCategory,
+  EventStatus,
+} from '../../../../../common/enums/event.enum';
+import { EventsWithChurchAndAddress } from '../../../../event/types/event.types';
 
 @Injectable()
 export class GetEventService implements IGetEventService {
@@ -12,7 +15,7 @@ export class GetEventService implements IGetEventService {
   constructor(
     @Inject('IEventRepository')
     private readonly eventRepository: IEventRepository,
-  ) {}
+  ) { }
 
   async perform(id: string): Promise<IEventResponseDto> {
     this.logger.log(`Buscando evento por ID: ${id}`);

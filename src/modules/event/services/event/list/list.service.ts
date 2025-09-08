@@ -4,8 +4,8 @@ import { IEventResponseDto } from '../../../dtos/event/event.response.dto';
 import { IListEventsRequestDto } from '../../../dtos/event/list.request.dto';
 import { IListEventsResponseDto } from '../../../dtos/event/list.response.dto';
 import { IEventRepository } from '../../../repositories/event.repository.interface';
-import { EventCategory, EventStatus } from 'src/common/enums/event.enum';
-import { EventsWithChurchAndAddress } from 'src/modules/event/types/event.types';
+import { EventCategory, EventStatus } from '../../../../../common/enums/event.enum';
+import { EventsWithChurchAndAddress } from '../../../../event/types/event.types';
 
 @Injectable()
 export class EventService implements IListEventsService {
@@ -13,7 +13,7 @@ export class EventService implements IListEventsService {
   constructor(
     @Inject('IEventRepository')
     private readonly eventRepository: IEventRepository,
-  ) {}
+  ) { }
 
   async perform(query: IListEventsRequestDto): Promise<IListEventsResponseDto> {
     const { page, limit, search } = query;

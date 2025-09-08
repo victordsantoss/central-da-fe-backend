@@ -3,8 +3,8 @@ import { IRegisterEventService } from './register.interface';
 import { IRegisterEventRequestDto } from '../../../dtos/event/register.request.dto';
 import { IEventRepository } from '../../../repositories/event.repository.interface';
 import { Event } from '@prisma/client';
-import { PrismaService } from 'src/database/core/prisma.service';
-import { EventStatus } from 'src/common/enums/event.enum';
+import { PrismaService } from '../../../../../database/core/prisma.service';
+import { EventStatus } from '../../../../../common/enums/event.enum';
 import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class RegisterEventService implements IRegisterEventService {
     @Inject('IEventRepository')
     private readonly eventRepository: IEventRepository,
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
 
   async perform(payload: IRegisterEventRequestDto): Promise<Event> {
     this.logger.log('Iniciando o processo de criação de evento');
