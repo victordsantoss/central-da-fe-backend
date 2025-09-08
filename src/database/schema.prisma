@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
@@ -10,19 +10,19 @@ datasource db {
 }
 
 model Address {
-  id             String           @id @default(cuid())
-  street         String           @db.VarChar(255)
-  number         String           @db.VarChar(50)
-  complement     String?          @db.VarChar(255)
-  neighborhood   String           @db.VarChar(255)
-  city           String           @db.VarChar(255)
-  state          String           @db.VarChar(2)
-  zipCode        String           @db.VarChar(10)
-  createdAt      DateTime         @default(now()) @db.Timestamp(6)
-  updatedAt      DateTime         @default(now()) @db.Timestamp(6)
-  userAddresses  UserAddress[]
+  id              String          @id @default(cuid())
+  street          String          @db.VarChar(255)
+  number          String          @db.VarChar(50)
+  complement      String?         @db.VarChar(255)
+  neighborhood    String          @db.VarChar(255)
+  city            String          @db.VarChar(255)
+  state           String          @db.VarChar(2)
+  zipCode         String          @db.VarChar(10)
+  createdAt       DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime        @default(now()) @db.Timestamp(6)
   churchAddresses ChurchAddress[]
-  events         Event[]
+  events          Event[]
+  userAddresses   UserAddress[]
 }
 
 model Phone {
@@ -31,8 +31,8 @@ model Phone {
   type         String        @default("MOBILE") @db.VarChar
   createdAt    DateTime      @default(now()) @db.Timestamp(6)
   updatedAt    DateTime      @default(now()) @db.Timestamp(6)
-  userPhones   UserPhone[]
   churchPhones ChurchPhone[]
+  userPhones   UserPhone[]
 }
 
 model Session {
@@ -41,29 +41,29 @@ model Session {
   isActive  Boolean   @default(true)
   startDate DateTime  @db.Timestamp(6)
   endDate   DateTime? @db.Timestamp(6)
-  userId    String?   
+  userId    String?
   user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model User {
-  id        String        @id @default(cuid())
-  name      String    @db.VarChar(255)
-  email     String    @db.VarChar(255)
-  cpf       String    @db.VarChar(14)
-  password  String    @db.VarChar(255)
-  isActive  Boolean   @default(true)
-  provider  String    @default("LOCAL") @db.VarChar
-  birthDate DateTime? @db.Date
-  createdAt DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt DateTime  @default(now()) @db.Timestamp(6)
-  deletedAt DateTime? @db.Timestamp(6)
-  roleId    String?
+  id            String         @id @default(cuid())
+  name          String         @db.VarChar(255)
+  email         String         @db.VarChar(255)
+  cpf           String         @db.VarChar(14)
+  password      String         @db.VarChar(255)
+  isActive      Boolean        @default(true)
+  provider      String         @default("LOCAL") @db.VarChar
+  birthDate     DateTime?      @db.Date
+  createdAt     DateTime       @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime       @default(now()) @db.Timestamp(6)
+  deletedAt     DateTime?      @db.Timestamp(6)
+  roleId        String?
+  orders        Order[]
+  sessions      Session[]
+  role          Role?          @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userAddresses UserAddress[]
   userPhones    UserPhone[]
-  sessions      Session[]
-  orders        Order[]
   userPositions UserPosition[]
-  role      Role?     @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Church {
@@ -78,42 +78,41 @@ model Church {
 
 model UserAddress {
   id        String   @id @default(cuid())
-  userId    String   
-  addressId String   
+  userId    String
+  addressId String
   createdAt DateTime @default(now()) @db.Timestamp(6)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   address   Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, addressId])
 }
 
 model ChurchAddress {
   id        String   @id @default(cuid())
-  churchId  String   
-  addressId String   
+  churchId  String
+  addressId String
   createdAt DateTime @default(now()) @db.Timestamp(6)
-  church    Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
   address   Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  church    Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@unique([churchId, addressId])
 }
 
-
 model UserPhone {
   id        String   @id @default(cuid())
-  userId    String   
-  phoneId   String   
+  userId    String
+  phoneId   String
   createdAt DateTime @default(now()) @db.Timestamp(6)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   phone     Phone    @relation(fields: [phoneId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, phoneId])
 }
 
 model ChurchPhone {
   id        String   @id @default(cuid())
-  churchId  String   
-  phoneId   String   
+  churchId  String
+  phoneId   String
   createdAt DateTime @default(now()) @db.Timestamp(6)
   church    Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
   phone     Phone    @relation(fields: [phoneId], references: [id], onDelete: Cascade)
@@ -122,20 +121,19 @@ model ChurchPhone {
 }
 
 model Event {
-  id        String   @id @default(cuid())
-  name        String   @db.VarChar(255)
-  description String   @db.Text
-  content     String?  @db.Text
-  category    String   @db.VarChar(100)
-  isPaid      Boolean  @default(false)
-  price       Decimal? @db.Decimal(10, 2)
-  availableTickets Int @default(0)
-  startDate   DateTime @db.Timestamp(6)
-  endDate     DateTime @db.Timestamp(6)
-  status      String   @default("ACTIVE") @db.VarChar(100)  
-  createdAt   DateTime @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime @updatedAt @db.Timestamp(6)
-
+  id               String   @id @default(cuid())
+  name             String   @db.VarChar(255)
+  description      String
+  content          String?
+  category         String   @db.VarChar(100)
+  isPaid           Boolean  @default(false)
+  price            Decimal? @db.Decimal(10, 2)
+  availableTickets Int      @default(0)
+  startDate        DateTime @db.Timestamp(6)
+  endDate          DateTime @db.Timestamp(6)
+  status           String   @default("ACTIVE") @db.VarChar(100)
+  createdAt        DateTime @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime @updatedAt @db.Timestamp(6)
   customLink       String?  @db.VarChar(255)
   instagramLink    String?  @db.VarChar(255)
   facebookLink     String?  @db.VarChar(255)
@@ -143,23 +141,20 @@ model Event {
   bannerVertical   String?  @db.VarChar(255)
   bannerHorizontal String?  @db.VarChar(255)
   bannerMain       String?  @db.VarChar(255)
-  
-  churchId    String   
-  church      Church   @relation(fields: [churchId], references: [id])
-  
-  addressId   String   
-  address     Address  @relation(fields: [addressId], references: [id])
-  
-  orders      Order[]
+  churchId         String
+  addressId        String
+  address          Address  @relation(fields: [addressId], references: [id])
+  church           Church   @relation(fields: [churchId], references: [id])
+  orders           Order[]
 }
 
 model Role {
-  id               String             @id @default(cuid())
-  name             RoleTypes          @default(USER)
-  isActive         Boolean            @default(true)
-  createdAt        DateTime           @default(now()) @db.Timestamp(6)
-  updatedAt        DateTime           @default(now()) @db.Timestamp(6)
-  users            User[]
+  id        String    @id @default(cuid())
+  name      RoleTypes @default(USER)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @default(now()) @db.Timestamp(6)
+  users     User[]
 }
 
 model Order {
@@ -170,9 +165,8 @@ model Order {
   total     Decimal  @db.Decimal(10, 2)
   createdAt DateTime @default(now()) @db.Timestamp(6)
   updatedAt DateTime @updatedAt @db.Timestamp(6)
-  
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   tickets   Ticket[]
 }
 
@@ -183,16 +177,14 @@ model Ticket {
   used      Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamp(6)
   updatedAt DateTime @updatedAt @db.Timestamp(6)
-  
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Position {
-  id        String   @id @default(cuid())
-  name      String   @db.VarChar(255)
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  updatedAt DateTime @updatedAt @db.Timestamp(6)
-  
+  id            String         @id @default(cuid())
+  name          String         @db.VarChar(255)
+  createdAt     DateTime       @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime       @updatedAt @db.Timestamp(6)
   userPositions UserPosition[]
 }
 
@@ -201,10 +193,9 @@ model UserPosition {
   userId     String
   positionId String
   createdAt  DateTime @default(now()) @db.Timestamp(6)
-  
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  position Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
-  
+  position   Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([userId, positionId])
 }
 
