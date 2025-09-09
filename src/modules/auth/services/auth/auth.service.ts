@@ -29,7 +29,7 @@ export class AuthService implements IAuthService {
     @Inject('IRoleRepository')
     private readonly roleRepository: IRoleRepository,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   public async login(email: string, password: string): Promise<string> {
     const user = await this.validateUser(email);
