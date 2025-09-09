@@ -141,6 +141,7 @@ model Event {
   bannerVertical   String?  @db.VarChar(255)
   bannerHorizontal String?  @db.VarChar(255)
   bannerMain       String?  @db.VarChar(255)
+  mode             String?  @default("PRESENCIAL") @db.VarChar(100)
   churchId         String
   addressId        String
   address          Address  @relation(fields: [addressId], references: [id])

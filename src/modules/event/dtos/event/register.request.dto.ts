@@ -89,6 +89,12 @@ export class IRegisterEventRequestDto {
   isPaid: boolean;
 
   @ApiProperty({
+    description: 'Tipo de evento',
+  })
+  @IsString()
+  mode: string;
+
+  @ApiProperty({
     description: 'Quantidade de tickets disponíveis',
   })
   @IsNumber()
