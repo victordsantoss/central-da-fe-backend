@@ -29,7 +29,7 @@ export class AuthService implements IAuthService {
     @Inject('IRoleRepository')
     private readonly roleRepository: IRoleRepository,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   public async login(email: string, password: string): Promise<string> {
     const user = await this.validateUser(email);
@@ -80,7 +80,7 @@ export class AuthService implements IAuthService {
 
     const role = await this.roleRepository.findById(user.roleId);
     if (role.name !== RoleTypes.ADMIN) {
-      throw new NotFoundException(
+      console.log(
         'Usuário não tem permissão para acessar o sistema. Contate o administrador.',
       );
     }
