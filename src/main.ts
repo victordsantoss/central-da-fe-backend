@@ -24,6 +24,7 @@ async function bootstrap() {
   setupSwagger(app);
   app.enableCors(corsConfig);
 
+  console.log('Api is running');
   await app.listen(3000);
 }
 bootstrap();
