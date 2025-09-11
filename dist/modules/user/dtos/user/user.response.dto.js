@@ -79,4 +79,11 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], IUserResponseDto.prototype, "roleId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'IDs das posições do usuário',
+        required: false,
+    }),
+    __metadata("design:type", Array)
+], IUserResponseDto.prototype, "positionIds", void 0);
 //# sourceMappingURL=user.response.dto.js.map

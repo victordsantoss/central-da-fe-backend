@@ -12,6 +12,7 @@ export declare class IRegisterEventRequestDto {
     description: string;
     category: string;
     isPaid: boolean;
+    mode: string;
     availableTickets: number;
     price?: number;
     startDate: Date | string;

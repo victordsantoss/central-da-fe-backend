@@ -105,6 +105,13 @@ __decorate([
 ], IRegisterEventRequestDto.prototype, "isPaid", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
+        description: 'Tipo de evento',
+    }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], IRegisterEventRequestDto.prototype, "mode", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
         description: 'Quantidade de tickets disponíveis',
     }),
     (0, class_validator_1.IsNumber)(),

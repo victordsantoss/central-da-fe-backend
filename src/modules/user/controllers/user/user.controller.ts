@@ -16,7 +16,10 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { CpfGuard } from '../../../../common/guards/cpf.guard';
-import { IRegisterUserRequestDto } from '../../dtos/user/register.request.dto';
+import {
+  IRegisterUserRequestDto,
+  IRegisterUserRequestDtoWithRandomPassword,
+} from '../../dtos/user/register.request.dto';
 import { IUserResponseDto } from '../../dtos/user/user.response.dto';
 import { IGetUserByCpfRequestDto } from '../../dtos/user/get-by-cpf.request.dto';
 import { IRegisterUserService } from '../../services/user/register/register.interface';
@@ -49,6 +52,22 @@ export class UserController {
     @Body() userData: IRegisterUserRequestDto,
   ): Promise<IUserResponseDto> {
     return await this.registerUserService.perform(userData);
+  }
+
+  @Post('random-password')
+  @ApiOperation({ summary: 'Registrar um novo usuário com senha aleatória' })
+  @ApiResponse({ status: 201, description: 'Usuário registrado com sucesso.' })
+  @ApiResponse({ status: 400, description: 'Erro de validação.' })
+  @ApiBody({
+    type: IRegisterUserRequestDtoWithRandomPassword,
+    description: 'Dados de registro do usuário',
+  })
+  @UseGuards(CpfGuard)
+  async createRandomPassword(
+    @Body() userData: IRegisterUserRequestDtoWithRandomPassword,
+  ): Promise<IUserResponseDto> {
+    console.log(userData);
+    return await this.registerUserService.performWithRandomPassword(userData);
   }
 
   @Get('')

@@ -18,6 +18,7 @@ export declare class RegisterUserService implements IRegisterUserService {
     private readonly _cpfField;
     constructor(userRepository: IUserRepository, passwordService: IPasswordService, getRoleService: IGetRoleService, churchRepository: IChurchRepository, positionRepository: IPositionRepository);
     perform(userData: IRegisterUserRequestDto): Promise<IUserResponseDto>;
+    performWithRandomPassword(userData: IRegisterUserRequestDto): Promise<IUserResponseDto>;
     private findUserByEmail;
     private findUserByCpf;
     private normalizeResponse;

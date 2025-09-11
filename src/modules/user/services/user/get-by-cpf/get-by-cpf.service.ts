@@ -29,6 +29,7 @@ export class GetUserByCpfService implements IGetUserByCpfService {
       isActive: user.isActive,
       provider: user.provider,
       birthDate: user.birthDate,
+      positionIds: user.userPositions.map((position) => position.positionId),
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       roleId: user.roleId,

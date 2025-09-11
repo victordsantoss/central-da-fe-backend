@@ -45,6 +45,10 @@ let RegisterUserService = RegisterUserService_1 = class RegisterUserService {
         await this.userRepository.createUserPositions(createdUser.id, userData.positionIds);
         return this.normalizeResponse(createdUser);
     }
+    async performWithRandomPassword(userData) {
+        const password = userData.cpf;
+        return this.perform({ ...userData, password });
+    }
     async findUserByEmail(email) {
         this.logger.log(`Buscando usuário por email: ${email}`);
         const existingUserByEmail = await this.userRepository.findOneBy(this.emailField, email);

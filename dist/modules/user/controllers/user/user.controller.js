@@ -29,6 +29,10 @@ let UserController = class UserController {
     async create(userData) {
         return await this.registerUserService.perform(userData);
     }
+    async createRandomPassword(userData) {
+        console.log(userData);
+        return await this.registerUserService.performWithRandomPassword(userData);
+    }
     async getAuthenticatedUser(req) {
         return this.getAuthenticatedUserService.perform(req.user.token);
     }
@@ -52,6 +56,21 @@ __decorate([
     __metadata("design:paramtypes", [register_request_dto_1.IRegisterUserRequestDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('random-password'),
+    (0, swagger_1.ApiOperation)({ summary: 'Registrar um novo usuário com senha aleatória' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Usuário registrado com sucesso.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro de validação.' }),
+    (0, swagger_1.ApiBody)({
+        type: register_request_dto_1.IRegisterUserRequestDtoWithRandomPassword,
+        description: 'Dados de registro do usuário',
+    }),
+    (0, common_1.UseGuards)(cpf_guard_1.CpfGuard),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [register_request_dto_1.IRegisterUserRequestDtoWithRandomPassword]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "createRandomPassword", null);
 __decorate([
     (0, common_1.Get)(''),
     (0, swagger_1.ApiOperation)({ summary: 'Obter dados do usuário autenticado' }),

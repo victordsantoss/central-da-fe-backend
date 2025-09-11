@@ -1,4 +1,4 @@
-import { IRegisterUserRequestDto } from '../../dtos/user/register.request.dto';
+import { IRegisterUserRequestDto, IRegisterUserRequestDtoWithRandomPassword } from '../../dtos/user/register.request.dto';
 import { IUserResponseDto } from '../../dtos/user/user.response.dto';
 import { IGetUserByCpfRequestDto } from '../../dtos/user/get-by-cpf.request.dto';
 import { IRegisterUserService } from '../../services/user/register/register.interface';
@@ -11,6 +11,7 @@ export declare class UserController {
     private readonly getUserByCpfService;
     constructor(registerUserService: IRegisterUserService, getAuthenticatedUserService: IGetAuthenticatedUserService, getUserByCpfService: IGetUserByCpfService);
     create(userData: IRegisterUserRequestDto): Promise<IUserResponseDto>;
+    createRandomPassword(userData: IRegisterUserRequestDtoWithRandomPassword): Promise<IUserResponseDto>;
     getAuthenticatedUser(req: {
         user: IAuthenticatedUserRequestDto;
     }): Promise<IUserResponseDto>;

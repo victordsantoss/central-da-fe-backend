@@ -55,4 +55,10 @@ export class IUserResponseDto {
     required: false,
   })
   roleId?: string;
+
+  @ApiProperty({
+    description: 'IDs das posições do usuário',
+    required: false,
+  })
+  positionIds?: string[];
 }

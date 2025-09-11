@@ -9,4 +9,5 @@ export declare class IUserResponseDto {
     createdAt: Date;
     updatedAt: Date;
     roleId?: string;
+    positionIds?: string[];
 }

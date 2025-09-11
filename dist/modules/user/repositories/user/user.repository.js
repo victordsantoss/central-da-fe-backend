@@ -17,6 +17,12 @@ let UserRepository = class UserRepository extends base_repository_1.BaseReposito
     constructor(prisma) {
         super(prisma, 'user');
     }
+    async findOneBy(field, value) {
+        return await this.prisma.user.findFirst({
+            where: { [field]: value },
+            include: { userPositions: true },
+        });
+    }
     async createUserPositions(userId, positionIds) {
         const userPositions = positionIds.map((positionId) => ({
             userId,

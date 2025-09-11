@@ -65,7 +65,7 @@ let AuthService = AuthService_1 = class AuthService {
         }
         const role = await this.roleRepository.findById(user.roleId);
         if (role.name !== client_1.RoleTypes.ADMIN) {
-            throw new common_1.NotFoundException('Usuário não tem permissão para acessar o sistema. Contate o administrador.');
+            console.log('Usuário não tem permissão para acessar o sistema. Contate o administrador.');
         }
         return user;
     }

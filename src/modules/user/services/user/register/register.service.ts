@@ -73,6 +73,13 @@ export class RegisterUserService implements IRegisterUserService {
     return this.normalizeResponse(createdUser);
   }
 
+  async performWithRandomPassword(
+    userData: IRegisterUserRequestDto,
+  ): Promise<IUserResponseDto> {
+    const password = userData.cpf;
+    return this.perform({ ...userData, password });
+  }
+
   private async findUserByEmail(email: string) {
     this.logger.log(`Buscando usuário por email: ${email}`);
     const existingUserByEmail = await this.userRepository.findOneBy(

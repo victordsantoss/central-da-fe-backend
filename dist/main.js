@@ -19,6 +19,7 @@ async function bootstrap() {
     app.useGlobalFilters(new all_exceptions_filter_1.AllExceptionsFilter());
     (0, swagger_config_1.setupSwagger)(app);
     app.enableCors(cors_config_1.corsConfig);
+    console.log('Api is running');
     await app.listen(3000);
 }
 bootstrap();
