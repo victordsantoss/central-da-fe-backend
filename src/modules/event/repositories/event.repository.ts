@@ -4,7 +4,10 @@ import { BaseRepository } from '../../../common/core/repositories/base.repositor
 import { PrismaService } from '../../../database/core/prisma.service';
 import { IListEventsRequestDto } from '../dtos/event/list.request.dto';
 import { IEventRepository } from './event.repository.interface';
-import { EventsWithChurchAndAddress } from '../types/event.types';
+import {
+  EventsWithChurchAndAddress,
+  EventSubscriptionResult,
+} from '../types/event.types';
 
 @Injectable()
 export class EventRepository
@@ -94,5 +97,62 @@ export class EventRepository
         address: true,
       },
     });
+  }
+
+  async createSubscription(
+    userId: string,
+    eventId: string,
+    ticketCode: string,
+  ): Promise<EventSubscriptionResult> {
+    return this.executeTransactionWithOptions(async (tx) => {
+      const order = await tx.order.create({
+        data: {
+          userId,
+          eventId,
+          quantity: 1,
+          total: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+
+      const ticket = await tx.ticket.create({
+        data: {
+          orderId: order.id,
+          code: ticketCode,
+          used: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+
+      await tx.event.update({
+        where: { id: eventId },
+        data: {
+          availableTickets: {
+            decrement: 1,
+          },
+        },
+      });
+
+      return {
+        orderId: order.id,
+        ticketCode: ticket.code,
+      };
+    });
+  }
+
+  async checkUserSubscription(
+    userId: string,
+    eventId: string,
+  ): Promise<boolean> {
+    const existingOrder = await this.prisma.order.findFirst({
+      where: {
+        userId,
+        eventId,
+      },
+    });
+
+    return !!existingOrder;
   }
 }

@@ -16,6 +16,15 @@ import { IEventResponseDto } from '../dtos/event/event.response.dto';
 import { IGetEventService } from '../services/event/get/get.interface';
 import { IRegisterEventRequestDto } from '../dtos/event/register.request.dto';
 import { IRegisterEventService } from '../services/event/register/register.interface';
+import {
+  ISubscriptionRequestDto,
+  SubscriptionRequestDto,
+} from '../dtos/event/subscription.request.dto';
+import {
+  ISubscriptionResponseDto,
+  SubscriptionResponseDto,
+} from '../dtos/event/subscription.response.dto';
+import { ISubscriptionService } from '../services/event/subscription/subscription.interface';
 
 @ApiTags('Event')
 @Controller('event')
@@ -27,6 +36,8 @@ export class EventController {
     private readonly getEventService: IGetEventService,
     @Inject('IRegisterEventService')
     private readonly registerEventService: IRegisterEventService,
+    @Inject('ISubscriptionService')
+    private readonly subscriptionService: ISubscriptionService,
   ) {}
 
   @Get()
@@ -84,5 +95,29 @@ export class EventController {
   })
   async create(@Body() event: IRegisterEventRequestDto): Promise<Event> {
     return this.registerEventService.perform(event);
+  }
+
+  @Post(':id/subscribe')
+  @ApiOperation({
+    summary: 'Inscrever-se em um evento',
+    description: 'Realiza a inscrição de um usuário em um evento gratuito',
+  })
+  @ApiBody({
+    type: SubscriptionRequestDto,
+    description: 'Dados da inscrição',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Inscrição realizada com sucesso',
+    type: SubscriptionResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro na inscrição - evento lotado, pago ou não encontrado',
+  })
+  async subscribe(
+    @Body() subscription: ISubscriptionRequestDto,
+  ): Promise<ISubscriptionResponseDto> {
+    return this.subscriptionService.perform(subscription);
   }
 }
