@@ -2,6 +2,7 @@ import { EventRepository } from '../repositories/event.repository';
 import { EventService } from '../services/event/list/list.service';
 import { GetEventService } from '../services/event/get/get.service';
 import { RegisterEventService } from '../services/event/register/register.service';
+import { SubscriptionService } from '../services/event/subscription/subscription.service';
 export declare const eventProviders: ({
     provide: string;
     useClass: typeof EventService;
@@ -11,6 +12,9 @@ export declare const eventProviders: ({
 } | {
     provide: string;
     useClass: typeof RegisterEventService;
+} | {
+    provide: string;
+    useClass: typeof SubscriptionService;
 } | {
     provide: string;
     useClass: typeof EventRepository;

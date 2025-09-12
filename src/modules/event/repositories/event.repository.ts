@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Event, Prisma } from '@prisma/client';
+import { Event, Order, Prisma, Ticket } from '@prisma/client';
 import { BaseRepository } from '../../../common/core/repositories/base.repository';
 import { PrismaService } from '../../../database/core/prisma.service';
 import { IListEventsRequestDto } from '../dtos/event/list.request.dto';
@@ -95,6 +95,31 @@ export class EventRepository
       include: {
         church: true,
         address: true,
+      },
+    });
+  }
+
+  async createOrder(userId: string, eventId: string): Promise<Order> {
+    return this.prisma.order.create({
+      data: {
+        userId,
+        eventId,
+        quantity: 1,
+        total: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async createTicket(orderId: string, ticketCode: string): Promise<Ticket> {
+    return this.prisma.ticket.create({
+      data: {
+        orderId,
+        code: ticketCode,
+        used: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     });
   }

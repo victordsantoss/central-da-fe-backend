@@ -19,11 +19,14 @@ const list_request_dto_1 = require("../dtos/event/list.request.dto");
 const list_response_dto_1 = require("../dtos/event/list.response.dto");
 const event_response_dto_1 = require("../dtos/event/event.response.dto");
 const register_request_dto_1 = require("../dtos/event/register.request.dto");
+const subscription_response_dto_1 = require("../dtos/event/subscription.response.dto");
+const subscription_request_dto_1 = require("../dtos/event/subscription.request.dto");
 let EventController = class EventController {
-    constructor(listEventsService, getEventService, registerEventService) {
+    constructor(listEventsService, getEventService, registerEventService, subscriptionService) {
         this.listEventsService = listEventsService;
         this.getEventService = getEventService;
         this.registerEventService = registerEventService;
+        this.subscriptionService = subscriptionService;
     }
     async findAll(query) {
         return this.listEventsService.perform(query);
@@ -33,6 +36,9 @@ let EventController = class EventController {
     }
     async create(event) {
         return this.registerEventService.perform(event);
+    }
+    async subscribe(subscription) {
+        return this.subscriptionService.perform(subscription);
     }
 };
 exports.EventController = EventController;
@@ -96,12 +102,37 @@ __decorate([
     __metadata("design:paramtypes", [register_request_dto_1.IRegisterEventRequestDto]),
     __metadata("design:returntype", Promise)
 ], EventController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)(':id/subscribe'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Inscrever-se em um evento',
+        description: 'Realiza a inscrição de um usuário em um evento gratuito',
+    }),
+    (0, swagger_1.ApiBody)({
+        type: subscription_request_dto_1.ISubscriptionRequestDto,
+        description: 'Dados da inscrição',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Inscrição realizada com sucesso',
+        type: subscription_response_dto_1.ISubscriptionResponseDto,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Erro na inscrição - evento lotado, pago ou não encontrado',
+    }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [subscription_request_dto_1.ISubscriptionRequestDto]),
+    __metadata("design:returntype", Promise)
+], EventController.prototype, "subscribe", null);
 exports.EventController = EventController = __decorate([
     (0, swagger_1.ApiTags)('Event'),
     (0, common_1.Controller)('event'),
     __param(0, (0, common_1.Inject)('IListEventsService')),
     __param(1, (0, common_1.Inject)('IGetEventService')),
     __param(2, (0, common_1.Inject)('IRegisterEventService')),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __param(3, (0, common_1.Inject)('ISubscriptionService')),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], EventController);
 //# sourceMappingURL=event.controller.js.map

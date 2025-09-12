@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export interface ISubscriptionResponseDto {
-  orderId: string;
-  ticketCode: string;
-  eventName: string;
-  message: string;
-}
-
-export class SubscriptionResponseDto implements ISubscriptionResponseDto {
+export class ISubscriptionResponseDto {
   @ApiProperty({
     description: 'ID do pedido criado',
     example: 'clxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',

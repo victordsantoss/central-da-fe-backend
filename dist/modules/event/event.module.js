@@ -11,14 +11,16 @@ const common_1 = require("@nestjs/common");
 const database_module_1 = require("../../database/database.module");
 const event_controller_1 = require("./controllers/event.controller");
 const event_provider_1 = require("./providers/event.provider");
+const common_module_1 = require("../../common/common.module");
+const code_utils_1 = require("../../common/core/utils/code.utils");
 let EventModule = class EventModule {
 };
 exports.EventModule = EventModule;
 exports.EventModule = EventModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.PrismaModule],
+        imports: [database_module_1.PrismaModule, common_module_1.CommonModule],
         controllers: [event_controller_1.EventController],
-        providers: [...event_provider_1.eventProviders],
+        providers: [...event_provider_1.eventProviders, code_utils_1.CodeGenerator],
         exports: [...event_provider_1.eventProviders],
     })
 ], EventModule);

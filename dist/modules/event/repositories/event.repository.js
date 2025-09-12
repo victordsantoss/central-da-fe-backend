@@ -76,6 +76,73 @@ let EventRepository = class EventRepository extends base_repository_1.BaseReposi
             },
         });
     }
+    async createOrder(userId, eventId) {
+        return this.prisma.order.create({
+            data: {
+                userId,
+                eventId,
+                quantity: 1,
+                total: 0,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        });
+    }
+    async createTicket(orderId, ticketCode) {
+        return this.prisma.ticket.create({
+            data: {
+                orderId,
+                code: ticketCode,
+                used: false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        });
+    }
+    async createSubscription(userId, eventId, ticketCode) {
+        return this.executeTransactionWithOptions(async (tx) => {
+            const order = await tx.order.create({
+                data: {
+                    userId,
+                    eventId,
+                    quantity: 1,
+                    total: 0,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            });
+            const ticket = await tx.ticket.create({
+                data: {
+                    orderId: order.id,
+                    code: ticketCode,
+                    used: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            });
+            await tx.event.update({
+                where: { id: eventId },
+                data: {
+                    availableTickets: {
+                        decrement: 1,
+                    },
+                },
+            });
+            return {
+                orderId: order.id,
+                ticketCode: ticket.code,
+            };
+        });
+    }
+    async checkUserSubscription(userId, eventId) {
+        const existingOrder = await this.prisma.order.findFirst({
+            where: {
+                userId,
+                eventId,
+            },
+        });
+        return !!existingOrder;
+    }
 };
 exports.EventRepository = EventRepository;
 exports.EventRepository = EventRepository = __decorate([

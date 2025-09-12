@@ -16,15 +16,10 @@ import { IEventResponseDto } from '../dtos/event/event.response.dto';
 import { IGetEventService } from '../services/event/get/get.interface';
 import { IRegisterEventRequestDto } from '../dtos/event/register.request.dto';
 import { IRegisterEventService } from '../services/event/register/register.interface';
-import {
-  ISubscriptionRequestDto,
-  SubscriptionRequestDto,
-} from '../dtos/event/subscription.request.dto';
-import {
-  ISubscriptionResponseDto,
-  SubscriptionResponseDto,
-} from '../dtos/event/subscription.response.dto';
+
 import { ISubscriptionService } from '../services/event/subscription/subscription.interface';
+import { ISubscriptionResponseDto } from '../dtos/event/subscription.response.dto';
+import { ISubscriptionRequestDto } from '../dtos/event/subscription.request.dto';
 
 @ApiTags('Event')
 @Controller('event')
@@ -103,13 +98,13 @@ export class EventController {
     description: 'Realiza a inscrição de um usuário em um evento gratuito',
   })
   @ApiBody({
-    type: SubscriptionRequestDto,
+    type: ISubscriptionRequestDto,
     description: 'Dados da inscrição',
   })
   @ApiResponse({
     status: 201,
     description: 'Inscrição realizada com sucesso',
-    type: SubscriptionResponseDto,
+    type: ISubscriptionResponseDto,
   })
   @ApiResponse({
     status: 400,

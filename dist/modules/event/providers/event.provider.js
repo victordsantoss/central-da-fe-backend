@@ -5,6 +5,7 @@ const event_repository_1 = require("../repositories/event.repository");
 const list_service_1 = require("../services/event/list/list.service");
 const get_service_1 = require("../services/event/get/get.service");
 const register_service_1 = require("../services/event/register/register.service");
+const subscription_service_1 = require("../services/event/subscription/subscription.service");
 exports.eventProviders = [
     {
         provide: 'IListEventsService',
@@ -17,6 +18,10 @@ exports.eventProviders = [
     {
         provide: 'IRegisterEventService',
         useClass: register_service_1.RegisterEventService,
+    },
+    {
+        provide: 'ISubscriptionService',
+        useClass: subscription_service_1.SubscriptionService,
     },
     {
         provide: 'IEventRepository',
